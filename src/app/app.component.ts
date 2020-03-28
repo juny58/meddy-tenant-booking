@@ -23,11 +23,13 @@ export class AppComponent implements OnInit {
     this.getBooking()
   }
 
+  // fn to populate datepicker
   getFormattedDate(ms: number) {
     let time = this.datePipe.transform(new Date(ms), 'yyyy-MM-dd')
     return time
   }
 
+  // Get booking for tabular data
   getBooking() {
     this.shareDataService.runCalenderObserver.subscribe(() => {
       this.shareDataService.getBookings(this.bookingDate.start, this.bookingDate.end).subscribe((data: Array<Booking>) => {
@@ -39,6 +41,7 @@ export class AppComponent implements OnInit {
     })
   }
 
+  // change event for calender selection
   datePicked(n: number, e: any) {
     //console.log(e)
     let value = e.target.valueAsNumber

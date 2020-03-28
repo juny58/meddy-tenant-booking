@@ -17,6 +17,7 @@ export class BookingComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  // Room booking Api call
   bookroom(boolean: Boolean) {
     this.httpClient.post(environment.domain + "/reserve", {
       tenantName: this.tenantName,

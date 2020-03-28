@@ -1,10 +1,14 @@
 <div class="highlight-shadow">
+
+    <!-- Calender header -->
     <div class="p-2 bg-success text-center text-white">
         <i (click)="decreaseMonth()" class="hover-cursor nav fa fa-caret-left float-left"></i>
         {{selectedMonth}} &nbsp; {{selectedYear}}
         <i (click)="resetDate()" *ngIf="shareDataService.date?.fromDate || shareDataService.date?.toDate" class="hover-cursor pl-5 fa fa-undo"></i>
         <i (click)="increaseMonth()" class="hover-cursor nav fa fa-caret-right float-right"></i>
     </div>
+
+    <!-- Calender container -->
     <div #calender>
 
     </div>

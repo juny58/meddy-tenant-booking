@@ -18,6 +18,7 @@ export class ShareDataService {
 
   bookings: Array<Booking> = []
 
+  // Observable to trigger calender function
   runCalenderAccessor = new BehaviorSubject(null)
   runCalenderObserver = this.runCalenderAccessor.asObservable()
 
