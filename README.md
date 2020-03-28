@@ -1,27 +1,23 @@
-# RoomBook
+# Meddy Room Book
+This project is part of an ongoing interview process
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.2.
+## Framework
+Angular 9
 
-## Development server
+## requirement
+Lates nodejs and angular cli installed
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Running the project
+Install the dependencies by typing `npm i`. Then `ng s -o`. It will serve the project in localhost 4200 port.
 
-## Code scaffolding
+## Basic task asked
+Make a calender with js, have normal calender features, able to book a day, remove that.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## What more has been done
+1. Multiple date selection
+2. Highlight on select, highlight for booked dates
+3. Can't book older dates, selected dates
+4. Booked persons' names on hover as tooltip
+5. A tabula view to let you select start and end date to bring the booking history in accordance.
+4. Backend is edited in accordance to suport the added features
+6. Saving the database in backend with node js filesystem module instead of just runtime recording
