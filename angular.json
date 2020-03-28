@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "room-book": {
@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "room-book"
+    }
+  },
+  "defaultProject": "room-book",
+  "cli": {
+    "analytics": "1c6866c6-eed8-4127-9a3d-fd7e5f99d20f"
+  }
 }

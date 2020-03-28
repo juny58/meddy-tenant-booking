@@ -1,0 +1,20 @@
+<div class="booling-container p-3 bg-light">
+    <div class="input-group">
+        <input for="tenantName" [(ngModel)]="tenantName" type="text" class="form-control" placeholder="Tenant Name">
+    </div>
+    <div class="mt-3 mb-3 d-flex flex-nowrap">
+        <div>
+            <b class="text-primary">Selected Dataes:</b>
+        </div>
+        <div class="pl-2 pr-2">
+            <ng-container *ngIf="shareDataService.date.fromDate; else noDate">
+                {{shareDataService.date?.fromDate | date}} <b class="text-success">To</b> {{shareDataService.date?.toDate | date}}
+            </ng-container>
+            <ng-template #noDate>
+                <span class="text-secondary">No dates selected yet.</span>
+            </ng-template>
+        </div>
+    </div>
+    <button (click)="bookroom(true)" class="btn btn-primary mt-2">Book Room</button>
+    <button (click)="bookroom(false)" class="btn btn-danger ml-2 mt-2">Cancel Room</button>
+</div>
