@@ -30,6 +30,7 @@ export class CalenderComponent implements OnInit, AfterViewInit {
   constructor(public shareDataService: ShareDataService, private httpClient: HttpClient) { }
 
   ngOnInit() {
+    // Run trigger for calender to watch new boking, cancell, accordingly highlight selected and booked dates
     this.shareDataService.runCalenderObserver.subscribe((bool: boolean) => {
       if (this.viewInited) {
         this.prepareDatesToAccomodate()
@@ -38,11 +39,12 @@ export class CalenderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.viewInited = true
+    this.viewInited = true // Trigger to know whether HTML is ready
     this.prepareDatesToAccomodate()
   }
 
   increaseMonth() {
+    // Go to next month
     this.selectedMonthIndex++
     if (this.selectedMonthIndex > 11) {
       this.selectedMonthIndex = 0
@@ -53,6 +55,7 @@ export class CalenderComponent implements OnInit, AfterViewInit {
   }
 
   decreaseMonth() {
+    // go to preveious month
     this.selectedMonthIndex--
     if (this.selectedMonthIndex < 0) {
       this.selectedMonthIndex = 11
@@ -63,7 +66,7 @@ export class CalenderComponent implements OnInit, AfterViewInit {
   }
 
   prepareDatesToAccomodate() {
-    let currentMonthStartingDay = (new Date(this.selectedYear, this.selectedMonthIndex, 1)).getDay()
+    let currentMonthStartingDay = (new Date(this.selectedYear, this.selectedMonthIndex, 1)).getDay() // To get info on first date
     let currentMonthDays = this.getDayNumbersInMonth()[this.selectedMonthIndex]
     let oldTableElement = document.getElementById("calender-table")
     if (oldTableElement) {
@@ -74,8 +77,10 @@ export class CalenderComponent implements OnInit, AfterViewInit {
     table.classList.add('table', 'table-bordered', 'text-center')
     table.setAttribute("id", "calender-table")
     let i = 1
-    let currentRowSize = 0
+    let currentRowSize = 0 // max 7 items allowed in a row as there are 7 days in a week
     let tr: HTMLElement
+
+    // Day row in the table
     let headerTr = document.createElement("tr")
     this.dayList.forEach(d => {
       let th = document.createElement("th")
@@ -83,12 +88,14 @@ export class CalenderComponent implements OnInit, AfterViewInit {
       headerTr.appendChild(th)
     })
     table.appendChild(headerTr)
+
+    // Looping inside the dates in a month
     while (i <= currentMonthDays) {
-      if (currentRowSize == 0) {
+      if (currentRowSize == 0) { // creating new row when the size becomes 0 in a row or fills with 7 items
         tr = document.createElement("tr")
         table.appendChild(tr)
       }
-      if (i == 1) {
+      if (i == 1) { // populating the blank dates
         for (let j = 0; j < currentMonthStartingDay; j++) {
           let td = document.createElement("td")
           td.innerText = ""
@@ -110,24 +117,27 @@ export class CalenderComponent implements OnInit, AfterViewInit {
         td.classList.add("selected-date")
       }
 
+      // Highlighting on hover
       td.classList.add("hover-cursor", "hover-bg")
-      td.onclick = () => {
+
+      td.onclick = () => { // recording click for each dates
         this.dateClicked(td)
       }
-      td.innerText = i.toString()
+      td.innerText = i.toString() // filling in with dates
       tr.appendChild(td)
-      currentRowSize++
+      currentRowSize++ // increasing the size of each row, if reaches maximum, then size resets to 0
       // changing row
       if (currentRowSize == 7) {
         currentRowSize = 0
       }
       i++
     }
-    this.getBookings()
+    this.getBookings() // Booking highlighting related function that calls bookings in a given month
   }
 
   getDayNumbersInMonth(): Array<number> {
     let febDays = 28
+    // Finding if leap year
     if (this.selectedYear % 400 == 0 || (this.selectedYear % 100 != 0 && this.selectedYear % 4 == 0)) {
       febDays = 29
     }
@@ -135,7 +145,7 @@ export class CalenderComponent implements OnInit, AfterViewInit {
   }
 
   dateClicked(el: HTMLElement) {
-    //console.log(el.innerText)
+    // Highlighting selection
     if (el.classList.contains("selected-date")) {
       el.classList.remove("selected-date")
     } else {
@@ -144,7 +154,8 @@ export class CalenderComponent implements OnInit, AfterViewInit {
 
     let clickedDate = +el.innerText
     let formattedDate = Number(new Date(this.selectedYear, this.selectedMonthIndex, clickedDate))
-    //console.log(formattedDate, this.todayDateMs)
+    
+    // Determining whether the selected date is in permissible range
     if (!this.shareDataService.date.fromDate) {
       if (formattedDate >= this.todayDateMs) {
         this.shareDataService.date.fromDate = formattedDate
@@ -164,23 +175,25 @@ export class CalenderComponent implements OnInit, AfterViewInit {
   }
 
   resetDate() {
+    // Resets date to unselected for from date and todate
     this.shareDataService.date.fromDate = null;
     this.shareDataService.date.toDate = null
     this.prepareDatesToAccomodate()
   }
 
   getBookings() {
+    // getting first and last date of month
     let d1 = Number(new Date(this.selectedYear, this.selectedMonthIndex, 1))
     let dn = Number(new Date(this.selectedYear, this.selectedMonthIndex, this.getDayNumbersInMonth()[this.selectedMonthIndex]))
-    //console.log(dn)
+    
+    // Api call
     this.httpClient.get<Array<Booking>>(environment.domain + "/reserve/" + d1 + '/' + dn).subscribe(data => {
       let elements = [...this.calenderContainer.nativeElement.getElementsByTagName('td')]
-      //console.log(elements)
+      
+      // Highlighting booked dates
       elements.forEach(el => {
         let dateNow = Number(new Date(this.selectedYear, this.selectedMonthIndex, +el.innerText))
-        //console.log(dateNow)
         data.forEach(o => {
-          //console.log(o)
           if (dateNow >= o.fromDate && dateNow <= o.toDate && el.innerText) {
             el.classList.add("booked-date")
             el.title = o.tenantName
