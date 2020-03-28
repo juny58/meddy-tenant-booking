@@ -4,8 +4,8 @@ This project is part of an ongoing interview process
 ## Framework
 Angular 9
 
-## requirement
-Lates nodejs and angular cli installed
+## Requirement
+Latest nodejs and angular cli installed
 
 ## Running the project
 Install the dependencies by typing `npm i`. Then `ng s -o`. It will serve the project in localhost 4200 port.
